@@ -22,9 +22,4 @@ public class ParqueaderoDriver {
 		return repositorio.findAll();
 	}
 	
-	
-	@GetMapping("/parqueadero/get2")
-	public String buscar(){
-		return "si sirvo";
-	}
 }

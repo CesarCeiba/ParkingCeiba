@@ -13,7 +13,7 @@ public class Moto extends Vehiculo  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	
-	@Column
+	@Column (nullable = true)
 	private int cilindraje;
 	
 	

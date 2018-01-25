@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,19 +26,36 @@ public class CarroDriver {
 	private CarroJpaRepository repositorio;
 	
 	
-	@GetMapping("/carro/getAll")
+	@GetMapping("/regcarro/getAll")
 	public List<Carro> findAll(){
 		return repositorio.findAll();	
 	}
 	
 	
-	@GetMapping("/carro/get/{placa}")
+	@GetMapping("/regcarro/get/{placa}")
 	public Carro findOne(@PathVariable String placa){
 		return repositorio.findOne(placa);	
 	}
 	
 	
-	@PostMapping("/carro")
+	@PutMapping("/regcarro/update/{placa}")
+	public Carro update (@PathVariable String placa, @RequestBody Carro c){
+		
+		Carro car = repositorio.findOne(placa);
+		if (car == null){
+			return null;
+		}
+		
+		car.setPlaca(c.getPlaca());
+		car.setTarifa(c.getTarifa());
+		car.setHoraIngreso(c.getHoraIngreso());
+		car.setHoraSalida(c.getHoraSalida());
+		repositorio.save(car);
+		
+		return car;
+	}
+	
+	@PostMapping("/regcarro/insert")
 	public Carro save(@Valid @RequestBody Carro c){
 		return repositorio.save(c);
 	}

@@ -7,11 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import co.ceiba.parking.repository.UsuarioJpaRepository;
+
 @Entity
 @Table
-public class Usuario implements IUsuario, Serializable {	
+public class Usuario implements Serializable {	
 
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -24,22 +28,14 @@ public class Usuario implements IUsuario, Serializable {
 	private String password;
 	
 	
+	@Column (nullable = false, updatable = false)
+	private String token;
+	
+	
 	public Usuario(){
 		super();
 	}
-	
-	
-	@Override
-	public boolean login() {
-		return true;
-	}
 
-	
-	@Override
-	public boolean logout() {
-		return false;
-	}
-	
 	
 	public String getUsername() {
 		return username;
@@ -59,4 +55,16 @@ public class Usuario implements IUsuario, Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	
 }
