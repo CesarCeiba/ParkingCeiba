@@ -3,6 +3,7 @@ package co.ceiba.parking;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
@@ -33,7 +34,11 @@ public class main {
 		
 		long diff = Calendar.getInstance().getTime().getTime() - Calendar.getInstance().getTime().getTime();
 		
-		System.out.println(diff);
+		Calendar x = Calendar.getInstance();
+		System.out.println(Calendar.getInstance().getTime());
+		if (x.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().FRIDAY){
+			System.out.println("uuuuz");
+		}
 		
 		/*String encriptado, desencriptado;
 		

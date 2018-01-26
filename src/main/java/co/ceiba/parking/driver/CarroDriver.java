@@ -56,7 +56,15 @@ public class CarroDriver {
 	}
 	
 	@PostMapping("/regcarro/insert")
-	public Carro save(@Valid @RequestBody Carro c){
-		return repositorio.save(c);
+	public String save(@Valid @RequestBody Carro c){
+		if (!c.esPlacaValida()){
+			return "No está autorizado a ingresar!";
+		}
+		//List<String> 
+		/*Carro cars = repositorio.findAll(c.getPlaca());
+		
+		repositorio.fin*/
+		
+		return repositorio.save(c).toString();
 	}
 }

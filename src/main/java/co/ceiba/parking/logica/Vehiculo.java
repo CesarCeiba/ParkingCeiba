@@ -1,6 +1,7 @@
 package co.ceiba.parking.logica;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -86,5 +87,15 @@ public abstract class Vehiculo  implements Serializable {
 		this.tarifa = tarifa;
 	}
 	
-	
+	public boolean esPlacaValida(){
+		Calendar c = Calendar.getInstance();
+		boolean diaPermitido = true;
+		diaPermitido = (c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().MONDAY ? true : false);		
+		
+		if (this.placa.startsWith("A")){
+			return diaPermitido;
+		}else{
+			return true;
+		}
+	}
 }
