@@ -1,6 +1,7 @@
 package co.ceiba.parking.logica;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,15 @@ public class Moto extends Vehiculo  implements Serializable {
 		super();
 	}
 
+	
+	public Moto(String placa, Tarifa tarifa, Date horaIngreso, Date horaSalida, int cilindraje){
+		this.setPlaca(placa);
+		this.setTarifa(tarifa);
+		this.setHoraIngreso(horaIngreso);
+		this.setHoraSalida(horaSalida);
+		this.cilindraje = cilindraje;
+	}
+	
 	
 	public int getCilindraje() {
 		return cilindraje;

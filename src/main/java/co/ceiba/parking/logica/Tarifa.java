@@ -30,6 +30,18 @@ public class Tarifa implements Serializable {
 	private double valorHoraMoto;
 	
 	
+	public Tarifa() {
+		
+	}
+	
+	public Tarifa(double valorHoraCarro, double valorDiaCarro, double valorHoraMoto, double valorDiaMoto) {
+		this.valorHoraCarro = valorHoraCarro;
+		this.valorDiaCarro = valorDiaCarro;
+		this.valorHoraMoto = valorHoraMoto;
+		this.valorDiaMoto = valorDiaMoto;
+	}
+
+
 	@Column (name = "VALOR_DIA_MOTO", nullable = false)
 	private double valorDiaMoto;
 	

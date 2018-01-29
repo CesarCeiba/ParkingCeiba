@@ -25,6 +25,9 @@ public class CarroDriver {
 	@Autowired
 	private CarroJpaRepository repositorio;
 	
+	public CarroDriver(){
+		
+	}
 	
 	@GetMapping("/regcarro/getAll")
 	public List<Carro> findAll(){
@@ -56,15 +59,18 @@ public class CarroDriver {
 	}
 	
 	@PostMapping("/regcarro/insert")
-	public String save(@Valid @RequestBody Carro c){
+	public boolean save(@Valid @RequestBody Carro c){
+		
 		if (!c.esPlacaValida()){
-			return "No está autorizado a ingresar!";
+			return false;
 		}
-		//List<String> 
-		/*Carro cars = repositorio.findAll(c.getPlaca());
 		
-		repositorio.fin*/
+//		if (c.esPlacaValida() == ""){
+//			return false;
+//		}
 		
-		return repositorio.save(c).toString();
+		Carro r = repositorio.save(c);
+		
+		return r == null ? false : true;
 	}
 }

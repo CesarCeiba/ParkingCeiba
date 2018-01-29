@@ -89,10 +89,11 @@ public abstract class Vehiculo  implements Serializable {
 	
 	public boolean esPlacaValida(){
 		Calendar c = Calendar.getInstance();
+		c.setTime(this.getHoraIngreso());
 		boolean diaPermitido = true;
-		diaPermitido = (c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().MONDAY ? true : false);		
-		
-		if (this.placa.startsWith("A")){
+		diaPermitido = (c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().MONDAY ? false : true);		
+
+		if (this.getPlaca().toUpperCase().startsWith("A")){
 			return diaPermitido;
 		}else{
 			return true;

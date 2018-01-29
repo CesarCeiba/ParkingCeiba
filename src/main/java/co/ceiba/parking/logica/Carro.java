@@ -1,5 +1,7 @@
 package co.ceiba.parking.logica;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,5 +14,12 @@ public class Carro extends Vehiculo{
 	public Carro(){
 		super();
 	}
-
+	
+	public Carro(String placa, Tarifa tarifa, Date horaIngreso, Date horaSalida){
+		this.setPlaca(placa);
+		this.setTarifa(tarifa);
+		this.setHoraIngreso(horaIngreso);
+		this.setHoraSalida(horaSalida);
+	}
+	
 }

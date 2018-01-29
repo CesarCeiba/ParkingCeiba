@@ -7,10 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import co.ceiba.parking.repository.UsuarioJpaRepository;
-
 @Entity
 @Table
 public class Usuario implements Serializable {	
