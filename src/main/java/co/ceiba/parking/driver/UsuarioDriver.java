@@ -1,12 +1,9 @@
 package co.ceiba.parking.driver;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import co.ceiba.parking.crypto.Cryptografy;
 import co.ceiba.parking.logica.IUsuario;
 import co.ceiba.parking.logica.Usuario;
@@ -40,7 +37,7 @@ public class UsuarioDriver implements IUsuario {
 	@GetMapping("/usuario/login/{username}")
 	@Override
 	public String login(@PathVariable String username, String password) {
-		Usuario u = new Usuario();
+		Usuario u;
 		u = repositorio.findOne(username);
 		if (u == null){
 			return "404";

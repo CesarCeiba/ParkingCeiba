@@ -33,17 +33,11 @@ public class Parqueadero implements Serializable {
 		super();
 	}
 
-
-	
-	
 	
 	public Parqueadero(int capacidadCarros, int capacidadMotos) {
 		this.capacidadCarros = capacidadCarros;
 		this.capacidadMotos = capacidadMotos;
 	}
-
-
-
 
 
 	public int getId() {

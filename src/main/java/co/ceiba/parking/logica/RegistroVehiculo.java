@@ -1,50 +1,26 @@
 package co.ceiba.parking.logica;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import co.ceiba.parking.repository.CarroJpaRepository;
-import co.ceiba.parking.repository.MotoJpaRepository;
-
-//@RestController
-//@RequestMapping("/api")
 public class RegistroVehiculo {
 	
-//	@Autowired
-//	private CarroJpaRepository repoCar;
-//	@Autowired
-//	private MotoJpaRepository repoMoto;
 
-	
-	//@GetMapping ("/registro/total/{placa}")
-	//public double calcularTotalTarifa (/*@PathVariable(required = false) String placa){
-						
-//		Carro car = null;
-//		Moto moto = null;		
-//		
-//		if (repoCar.exists(placa)) {
-//			car = repoCar.findOne(placa);
-//			return totalParqueo(car);
-//					
-//		} else {
-//			moto = repoMoto.findOne(placa);
-//			return totalParqueo(moto);
-//		}
-		
-	//}
-	
-	
 	public double totalParqueo(Vehiculo v){
+		//variables
 		double diff;
+		
 		double adicionales = 0;
+		
 		double horas;
+		
 		double minutos;
-		double totalValorParqueo = 0;	
+		
+		double totalValorParqueo = 0;
+		
 		Carro car = null;
+		
 		Moto moto = null;
 		
+		
+		//implementation
 		diff = v.getHoraSalida().getTime() - v.getHoraIngreso().getTime();
 		
 				
@@ -101,18 +77,19 @@ public class RegistroVehiculo {
 	
 	
 	public double obtenerValorPorHoras(Vehiculo v, double horas){
-		double valorHora;
-		Tarifa t;
 		
-		t = v.getTarifa();
+		Tarifa t = v.getTarifa();
 		
 		if (v.getClass().getName().endsWith(".Carro")){
-			valorHora = t.getValorHoraCarro();
+			
+			return t.getValorHoraCarro()*horas;
+			
 		}else{
-			valorHora = t.getValorHoraMoto();
+			
+			return t.getValorHoraMoto()*horas;
+			
 		}
 		
-		return valorHora*horas;
 	}
 	
 	
@@ -129,7 +106,7 @@ public class RegistroVehiculo {
 		//convert to days
 		dias = (int) (Math.round(horas)/24);
 		
-		//Valido cuanto tiempo resto despues de obtener los dias
+		//Valid how Valido cuanto tiempo resto despues de obtener los dias
 		minutosRestanteCobroPorDia = ((horas)/24) - dias;
 		horas = Math.ceil(minutosRestanteCobroPorDia * 24);
 		
@@ -139,6 +116,7 @@ public class RegistroVehiculo {
 		}
 		
 		if (v.getClass().getName().endsWith(".Moto")){
+			
 			t = v.getTarifa();
 			valorParqueo = t.getValorDiaMoto()*dias;
 			
@@ -147,6 +125,7 @@ public class RegistroVehiculo {
 			}
 			
 		} else {
+			
 			t = v.getTarifa();
 			valorParqueo = t.getValorDiaCarro()*dias;
 			

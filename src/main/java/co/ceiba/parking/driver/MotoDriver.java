@@ -25,6 +25,11 @@ public class MotoDriver {
 	private MotoJpaRepository repositorio;
 	
 	
+	public void setRepositorio(MotoJpaRepository repositorio) {
+		this.repositorio = repositorio;
+	}
+
+
 	@GetMapping("/regmoto/getAll")
 	public List<Moto> findAll(){
 		return repositorio.findAll();	

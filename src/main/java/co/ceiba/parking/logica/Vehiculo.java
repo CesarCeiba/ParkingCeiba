@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import co.ceiba.parking.driver.CarroDriver;
 import co.ceiba.parking.driver.MotoDriver;
 import co.ceiba.parking.driver.RegistroVehiculoDriver;
-//import co.ceiba.parking.testdatabuilder.ParqueaderoTestDataBuilder;
 
 @Entity
 @Table
@@ -107,32 +106,18 @@ public abstract class Vehiculo  implements Serializable {
 		}
 	}
 	
-	public boolean hayCupoDisponible(Optional dr){	
-		
-		//ParqueaderoTestDataBuilder parqueaderoTestDataBuilder = new ParqueaderoTestDataBuilder();
-		//Parqueadero parqueadero = parqueaderoTestDataBuilder.build();
-		
+	public boolean hayCupoDisponible(){	
 		
 		if (this.getClass().getName().endsWith(".Carro")){
-			CarroDriver cd;
 			
-			if (dr.isPresent()){
-				cd = (CarroDriver) dr.get(); 
-			}else{
-				cd = new CarroDriver();
-			}
+			CarroDriver cd = new CarroDriver();
 			
 			if (cd.totalParqueados() == 20){
 				return false;
 			}
-		}else{
-			MotoDriver md;
 			
-			if (dr.isPresent()){
-				md = (MotoDriver) dr.get(); 
-			}else{
-				md = new MotoDriver();
-			}
+		}else{
+			MotoDriver md = new MotoDriver();
 			
 			if (md.totalParqueados() == 10){
 				return false;
