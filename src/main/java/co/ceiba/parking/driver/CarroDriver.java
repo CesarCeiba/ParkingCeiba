@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,12 +67,14 @@ public class CarroDriver {
 			return false;
 		}
 		
-//		if (c.esPlacaValida() == ""){
-//			return false;
-//		}
-		
 		Carro r = repositorio.save(c);
 		
 		return r == null ? false : true;
 	}
+	
+	@GetMapping("/regcarro/parqueados")
+	public int totalParqueados() {
+		return repositorio.totalParqueados();
+	}
+	
 }

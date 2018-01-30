@@ -8,33 +8,32 @@ import org.springframework.web.bind.annotation.RestController;
 import co.ceiba.parking.repository.CarroJpaRepository;
 import co.ceiba.parking.repository.MotoJpaRepository;
 
-@RestController
-@RequestMapping("/api")
+//@RestController
+//@RequestMapping("/api")
 public class RegistroVehiculo {
 	
-	@Autowired
-	private CarroJpaRepository repoCar;
-	@Autowired
-	private MotoJpaRepository repoMoto;
-	@Autowired
+//	@Autowired
+//	private CarroJpaRepository repoCar;
+//	@Autowired
+//	private MotoJpaRepository repoMoto;
 
 	
-	@GetMapping ("/registro/total/{placa}")
-	public double calcularTotalTarifa (@PathVariable(required = false) String placa){
+	//@GetMapping ("/registro/total/{placa}")
+	//public double calcularTotalTarifa (/*@PathVariable(required = false) String placa){
 						
-		Carro car = null;
-		Moto moto = null;		
+//		Carro car = null;
+//		Moto moto = null;		
+//		
+//		if (repoCar.exists(placa)) {
+//			car = repoCar.findOne(placa);
+//			return totalParqueo(car);
+//					
+//		} else {
+//			moto = repoMoto.findOne(placa);
+//			return totalParqueo(moto);
+//		}
 		
-		if (repoCar.exists(placa)) {
-			car = repoCar.findOne(placa);
-			return totalParqueo(car);
-					
-		} else {
-			moto = repoMoto.findOne(placa);
-			return totalParqueo(moto);
-		}
-		
-	}
+	//}
 	
 	
 	public double totalParqueo(Vehiculo v){
@@ -62,13 +61,10 @@ public class RegistroVehiculo {
 			}
 		}
 		
-		
-		
+				
 		//Convert milliseconds to minutes
 		minutos = ((diff)/60000);
 		horas = Math.ceil(minutos/60);	
-		
-		
 		
 		
 		// < 9 Hours
@@ -103,6 +99,7 @@ public class RegistroVehiculo {
 		return totalValorParqueo + adicionales;
 	}
 	
+	
 	public double obtenerValorPorHoras(Vehiculo v, double horas){
 		double valorHora;
 		Tarifa t;
@@ -118,6 +115,7 @@ public class RegistroVehiculo {
 		return valorHora*horas;
 	}
 	
+	
 	public double obtenerValorPorDias(Vehiculo v, double horas){
 		double minutosRestanteCobroPorDia = 0;
 		double dias;
@@ -131,11 +129,11 @@ public class RegistroVehiculo {
 		//convert to days
 		dias = (int) (Math.round(horas)/24);
 		
-		//Valido cuanto tiempo restó después de obtener los días
+		//Valido cuanto tiempo resto despues de obtener los dias
 		minutosRestanteCobroPorDia = ((horas)/24) - dias;
 		horas = Math.ceil(minutosRestanteCobroPorDia * 24);
 		
-		//si las horas restantes son mayor a 9 aumento un día 
+		//si las horas restantes son mayor a 9 aumento un dia 
 		if (horas > 9){
 			dias += 1;
 		}

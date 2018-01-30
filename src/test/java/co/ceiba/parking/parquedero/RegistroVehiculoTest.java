@@ -1,21 +1,23 @@
 package co.ceiba.parking.parquedero;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import co.ceiba.parking.driver.CarroDriver;
+import co.ceiba.parking.driver.MotoDriver;
+import co.ceiba.parking.driver.RegistroVehiculoDriver;
 import co.ceiba.parking.logica.Carro;
 import co.ceiba.parking.logica.Moto;
+import co.ceiba.parking.logica.Parqueadero;
 import co.ceiba.parking.logica.RegistroVehiculo;
+import co.ceiba.parking.logica.Vehiculo;
 import co.ceiba.parking.testdatabuilder.CarroTestDataBuilder;
 import co.ceiba.parking.testdatabuilder.MotoTestDataBuilder;
+import co.ceiba.parking.testdatabuilder.ParqueaderoTestDataBuilder;
 
 public class RegistroVehiculoTest {
 	
@@ -25,11 +27,14 @@ public class RegistroVehiculoTest {
 	private Date fechaInicialMoto;
 	private Date fechaFinalMoto;
 	private Date fechaIngresoVehiculoPlacaIniciaA;
-	private static Mockito mockito;
+	//private static Mockito mockito;
 	CarroDriver cd = new CarroDriver();
+	MotoDriver md = new MotoDriver();
 	CarroTestDataBuilder ctb = new CarroTestDataBuilder();
 	MotoTestDataBuilder mtb = new MotoTestDataBuilder();
 	RegistroVehiculo registro = new RegistroVehiculo();
+	ParqueaderoTestDataBuilder parqueaderoTestDataBuilder = new ParqueaderoTestDataBuilder();
+	Parqueadero parqueadero = new Parqueadero();
 	
 	@Before//(value = "")
 	public void setUp(){
@@ -47,16 +52,6 @@ public class RegistroVehiculoTest {
 		
 		cal.set(2018, 0, 28);
 		fechaIngresoVehiculoPlacaIniciaA = cal.getTime();
-		
-		ArrayList<Carro> lc = new ArrayList<>();
-		Carro c = new Carro();
-		for (int i = 0; i < 19; i++) {
-			lc.add(c);
-		}
-		
-		cd = mockito.mock(CarroDriver.class);
-		mockito.when(cd.findAll()).thenReturn(lc);
-		//notifyPersonService = new NotifyPersonService(emailService);
 		
 	}
 	
@@ -90,7 +85,7 @@ public class RegistroVehiculoTest {
 	
 	
 	@Test
-	public void ValidarIngresoPlacaIniciaLetraATest() {
+	public void IngresoPlacaIniciaLetraATest() {
 		//Arrange		
 		Carro c = ctb.withPlaca("ABC123")
 					 .withHoraIngreso(fechaIngresoVehiculoPlacaIniciaA)
@@ -102,6 +97,55 @@ public class RegistroVehiculoTest {
 	}
 	
 	
-	//Validar que no este parqueado y que haya cupo
+	@Test
+	public void ParqueaderoNoDisponibleCarro(){
+		//Arrange
+		parqueadero = parqueaderoTestDataBuilder.build();
+		Carro c = new Carro();
+		cd = Mockito.mock(CarroDriver.class);
+		Mockito.when(cd.totalParqueados()).thenReturn(parqueadero.getCapacidadCarros());
+		
+		//Act
+		boolean esperado = c.hayCupoDisponible(Optional.of(cd));
+								
+		//Assert
+		Assert.assertFalse(esperado);
+	}
+	
+	@Test
+	public void ParqueaderoNoDisponibleMoto(){
+		//Arrange
+		parqueadero = parqueaderoTestDataBuilder.build();
+		Moto m = new Moto();
+		md = Mockito.mock(MotoDriver.class);
+		Mockito.when(md.totalParqueados()).thenReturn(parqueadero.getCapacidadMotos());
+		
+		//Act
+		boolean esperado = m.hayCupoDisponible(Optional.of(md));
+								
+		//Assert
+		Assert.assertFalse(esperado);
+	}
+	
+	@Test
+	public void VehiculoEnParqueadero(){
+		//Arrange
+		Vehiculo v = ctb.withPlaca("").build();
+		RegistroVehiculoDriver vd;// 
+		vd = Mockito.mock(RegistroVehiculoDriver.class);
+		Mockito.when(vd.vehiculoEnParqueadero(Mockito.anyString())).thenReturn(1);
+		
+		//Act
+		boolean esperado = v.vehiculoEnParqueadero(Optional.of(vd));
+								
+		//Assert
+		Assert.assertTrue(esperado);
+	}
+	
+//	@Test
+//	public void validarParqueaderoNoDisponible(Vehiculo v){
+//		
+//	}
+	//Validar que no este parqueado
 	
 }

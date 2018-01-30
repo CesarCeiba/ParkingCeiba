@@ -3,6 +3,7 @@ package co.ceiba.parking.logica;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import co.ceiba.parking.driver.CarroDriver;
+import co.ceiba.parking.driver.MotoDriver;
+import co.ceiba.parking.driver.RegistroVehiculoDriver;
+//import co.ceiba.parking.testdatabuilder.ParqueaderoTestDataBuilder;
 
 @Entity
 @Table
@@ -87,6 +93,7 @@ public abstract class Vehiculo  implements Serializable {
 		this.tarifa = tarifa;
 	}
 	
+	
 	public boolean esPlacaValida(){
 		Calendar c = Calendar.getInstance();
 		c.setTime(this.getHoraIngreso());
@@ -98,5 +105,51 @@ public abstract class Vehiculo  implements Serializable {
 		}else{
 			return true;
 		}
+	}
+	
+	public boolean hayCupoDisponible(Optional dr){	
+		
+		//ParqueaderoTestDataBuilder parqueaderoTestDataBuilder = new ParqueaderoTestDataBuilder();
+		//Parqueadero parqueadero = parqueaderoTestDataBuilder.build();
+		
+		
+		if (this.getClass().getName().endsWith(".Carro")){
+			CarroDriver cd;
+			
+			if (dr.isPresent()){
+				cd = (CarroDriver) dr.get(); 
+			}else{
+				cd = new CarroDriver();
+			}
+			
+			if (cd.totalParqueados() == 20){
+				return false;
+			}
+		}else{
+			MotoDriver md;
+			
+			if (dr.isPresent()){
+				md = (MotoDriver) dr.get(); 
+			}else{
+				md = new MotoDriver();
+			}
+			
+			if (md.totalParqueados() == 10){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	public boolean vehiculoEnParqueadero(Optional<RegistroVehiculoDriver> OpregistroVehiculoDriver){
+		RegistroVehiculoDriver vd;
+		if (OpregistroVehiculoDriver != null){
+			vd = OpregistroVehiculoDriver.get();
+		}else{
+			vd = new RegistroVehiculoDriver();
+		}		
+		
+		return vd.vehiculoEnParqueadero(this.placa) > 0 ? true : false;
 	}
 }

@@ -34,6 +34,18 @@ public class Parqueadero implements Serializable {
 	}
 
 
+	
+	
+	
+	public Parqueadero(int capacidadCarros, int capacidadMotos) {
+		this.capacidadCarros = capacidadCarros;
+		this.capacidadMotos = capacidadMotos;
+	}
+
+
+
+
+
 	public int getId() {
 		return id;
 	}

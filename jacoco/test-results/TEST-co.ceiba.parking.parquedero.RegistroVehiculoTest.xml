@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="co.ceiba.parking.parquedero.RegistroVehiculoTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2018-01-30T19:14:45" hostname="CESAR-VELASQUEZ" time="0.216">
+  <properties/>
+  <testcase name="CalcularTotalParqueoMotoTest" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.003"/>
+  <testcase name="IngresoPlacaIniciaLetraATest" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.0"/>
+  <testcase name="ParqueaderoNoDisponibleMoto" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.194"/>
+  <testcase name="CalcularTotalParqueoCarroTest" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.0"/>
+  <testcase name="ParqueaderoNoDisponibleCarro" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.007"/>
+  <testcase name="VehiculoEnParqueadero" classname="co.ceiba.parking.parquedero.RegistroVehiculoTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

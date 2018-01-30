@@ -60,4 +60,8 @@ public class MotoDriver {
 		return repositorio.save(m);
 	}
 	
+	@GetMapping("/regmoto/parqueados")
+	public int totalParqueados() {
+		return repositorio.totalParqueados();
+	}
 }
