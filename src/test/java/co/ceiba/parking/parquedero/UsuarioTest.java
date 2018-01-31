@@ -1,5 +1,7 @@
 package co.ceiba.parking.parquedero;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.ceiba.parking.driver.UsuarioDriver;
+import co.ceiba.parking.exception.ParqueaderoException;
 import co.ceiba.parking.logica.Carro;
 import co.ceiba.parking.logica.Usuario;
 import co.ceiba.parking.repository.UsuarioJpaRepository;
@@ -55,7 +58,7 @@ public class UsuarioTest {
 	}
 	
 	@Test
-	public void BuscarCarroIdividual(){
+	public void BuscarUsuarioIdividual(){
 		//Arrange	
 		Usuario u = utdb.withUsername("cesar.velasquez").build();
 		Usuario esperado;
@@ -67,4 +70,47 @@ public class UsuarioTest {
 		Assert.assertEquals(esperado, u);
 		
 	}
+	
+	
+	@Test
+	public void LoginExitoso() throws ParqueaderoException{
+		//Arrange
+		String tokenEsperado = "";
+		Usuario u = utdb
+					.withUsername("cesar.velasquez")
+					.withPassword("123")
+					.build();
+		Mockito.when(usuarioJpaRepository.findOne(Mockito.anyString())).thenReturn(u);
+		//Act
+		try {
+			tokenEsperado = ud.login(u.getUsername(), u.getPassword());
+		} catch (ParqueaderoException e) {
+			throw new ParqueaderoException("Error en el Test -> 'LoginExitoso'");
+		}
+		
+		//Assert
+		Assert.assertNotEquals(tokenEsperado, "");
+	}
+	
+	
+	@Test
+	public void LoginFallido() throws ParqueaderoException{
+		//Arrange
+		String tokenEsperado = "";
+		Usuario u = utdb
+					.withUsername("cesar.velasquez")
+					.withPassword("123")
+					.build();
+		Mockito.when(usuarioJpaRepository.findOne(Mockito.anyString())).thenReturn(u);
+		//Act
+		try {
+			tokenEsperado = ud.login(u.getUsername(), "1234");
+		} catch (ParqueaderoException e) {
+			throw new ParqueaderoException("Error en el Test -> 'LoginFallido'");
+		}
+		
+		//Assert
+		Assert.assertEquals(tokenEsperado, "");
+	}
+	
 }

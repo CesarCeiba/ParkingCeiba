@@ -8,37 +8,37 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.ceiba.parking.crypto.Cryptografy;
+import co.ceiba.parking.exception.ParqueaderoException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CryptoTest {
 	
 	@Test
-	public void EncriptarCorrectamente(){
+	public void EncriptarCorrectamente() throws ParqueaderoException{
 		//Arrange
 		String cadenaEncriptada = "" ;
 		String cadenaDesEncriptada = "123456789";
 		//Act
 		try {
-			cadenaEncriptada = Cryptografy.Encriptar(cadenaDesEncriptada);
+			cadenaEncriptada = Cryptografy.encriptar(cadenaDesEncriptada);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ParqueaderoException("Ha ocurrido un error al Encriptar el Token");
 		}
 		//Assert
 		Assert.assertEquals("q9OSeJkI6NEw57X2w7vpnQ==", cadenaEncriptada);
 	}
 	
 	@Test
-	public void DesencriptarCorrectamente(){
+	public void DesencriptarCorrectamente() throws ParqueaderoException{
 		//Arrange
 		String cadenaEncriptada = "q9OSeJkI6NEw57X2w7vpnQ==";
 		String cadenaDesEncriptada = "";
 		//Act
 		try {
-			cadenaDesEncriptada = Cryptografy.Desencriptar(cadenaEncriptada);
+			cadenaDesEncriptada = Cryptografy.desencriptar(cadenaEncriptada);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new ParqueaderoException("Ha ocurrido un error al Desencriptar el Token");
 		}
 		//Assert
 		Assert.assertEquals("123456789", cadenaDesEncriptada);

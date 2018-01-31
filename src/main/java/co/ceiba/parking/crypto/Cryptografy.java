@@ -9,8 +9,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import co.ceiba.parking.exception.ParqueaderoException;
+
 public class Cryptografy {
-	public static String Encriptar(String texto) throws Exception {
+	public static String encriptar(String texto) throws ParqueaderoException {
 		
         String secretKey = "CeibaParking";
         String base64EncryptedString = "";
@@ -31,12 +33,12 @@ public class Cryptografy {
             base64EncryptedString = new String(base64Bytes);
  
         } catch (Exception ex) {
-        	throw new Exception("Ha ocurrido al encriptar la clave: "+ex.getMessage());        	
+        	throw new ParqueaderoException("Ha ocurrido al encriptar la clave: "+ex.getMessage());        	
         }
         return base64EncryptedString;
 	}
 	
-	public static String Desencriptar(String textoEncriptado) throws Exception {
+	public static String desencriptar(String textoEncriptado) throws ParqueaderoException {
 		 
         String secretKey = "CeibaParking"; //llave para encriptar datos
         String base64EncryptedString = "";
@@ -56,7 +58,7 @@ public class Cryptografy {
             base64EncryptedString = new String(plainText, "UTF-8");
  
         } catch (Exception ex) {
-        	throw new Exception("Ha ocurrido al encriptar la clave: "+ex.getMessage());
+        	throw new ParqueaderoException ("Ha ocurrido al encriptar la clave: "+ex.getMessage());
         }
         return base64EncryptedString;
     }

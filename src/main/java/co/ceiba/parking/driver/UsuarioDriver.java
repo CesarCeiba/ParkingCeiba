@@ -1,10 +1,13 @@
 package co.ceiba.parking.driver;
 
 import java.util.List;
+
+import javax.swing.plaf.BorderUIResource.EmptyBorderUIResource;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import co.ceiba.parking.crypto.Cryptografy;
+import co.ceiba.parking.exception.ParqueaderoException;
 import co.ceiba.parking.logica.IUsuario;
 import co.ceiba.parking.logica.Usuario;
 import co.ceiba.parking.repository.UsuarioJpaRepository;
@@ -36,25 +39,36 @@ public class UsuarioDriver implements IUsuario {
 
 	@GetMapping("/usuario/login/{username}")
 	@Override
-	public String login(@PathVariable String username, String password) {
+	public String login(@PathVariable String username, String password) throws ParqueaderoException {
 		Usuario u;
 		u = repositorio.findOne(username);
+		
 		if (u == null){
-			return "404";
+			return "";
 		}
 		
-		//if (u.getPassword().equals(password)){
+		if (u.getPassword().equals(password)){
+			
 			String token = "";
+			
 			try {
-				token = Cryptografy.Encriptar(username);
+				
+				token = Cryptografy.encriptar(username+password);
+				
 			} catch (Exception e) {
-				e.printStackTrace();
+				
+				throw new ParqueaderoException("Ha ocurrido un error en el Login");
+				
 			}
+			
 			u.setToken(token);
+			
 			repositorio.save(u);
+			
 			return token;
-		//}
-
+		}
+		
+		return "";
 	}
 	
 	
