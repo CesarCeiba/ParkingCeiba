@@ -14,13 +14,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 public class Cryptografy {
 	public static String Encriptar(String texto) {
 		
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat format2 = new SimpleDateFormat("HH:MM:SS");
-		String fecha = format1.format(Calendar.getInstance().getTime());
-		String hora =  format2.format(Calendar.getInstance().getTime());
-		
-		texto += "*"+fecha+";"+hora;
-		
         String secretKey = "CeibaParking";
         String base64EncryptedString = "";
  

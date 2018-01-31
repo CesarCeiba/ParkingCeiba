@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="co.ceiba.parking.parquedero.CryptoTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-01-31T12:40:00" hostname="CESAR-VELASQUEZ" time="0.25">
+  <properties/>
+  <testcase name="EncriptarCorrectamente" classname="co.ceiba.parking.parquedero.CryptoTest" time="0.25"/>
+  <testcase name="DesencriptarCorrectamente" classname="co.ceiba.parking.parquedero.CryptoTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
