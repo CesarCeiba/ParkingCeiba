@@ -3,8 +3,6 @@ package co.ceiba.parking.logica;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import co.ceiba.parking.driver.CarroDriver;
-import co.ceiba.parking.driver.MotoDriver;
-import co.ceiba.parking.driver.RegistroVehiculoDriver;
 
 @Entity
 @Table
@@ -97,7 +92,7 @@ public abstract class Vehiculo  implements Serializable {
 		Calendar c = Calendar.getInstance();
 		c.setTime(this.getHoraIngreso());
 		boolean diaPermitido = true;
-		diaPermitido = (c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().MONDAY ? false : true);		
+		diaPermitido = (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY ? false : true);		
 
 		if (this.getPlaca().toUpperCase().startsWith("A")){
 			return diaPermitido;
@@ -106,35 +101,4 @@ public abstract class Vehiculo  implements Serializable {
 		}
 	}
 	
-	public boolean hayCupoDisponible(){	
-		
-		if (this.getClass().getName().endsWith(".Carro")){
-			
-			CarroDriver cd = new CarroDriver();
-			
-			if (cd.totalParqueados() == 20){
-				return false;
-			}
-			
-		}else{
-			MotoDriver md = new MotoDriver();
-			
-			if (md.totalParqueados() == 10){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	
-	public boolean vehiculoEnParqueadero(Optional<RegistroVehiculoDriver> OpregistroVehiculoDriver){
-		RegistroVehiculoDriver vd;
-		if (OpregistroVehiculoDriver != null){
-			vd = OpregistroVehiculoDriver.get();
-		}else{
-			vd = new RegistroVehiculoDriver();
-		}		
-		
-		return vd.vehiculoEnParqueadero(this.placa) > 0 ? true : false;
-	}
 }

@@ -33,6 +33,19 @@ public class Usuario implements Serializable {
 	}
 
 	
+	
+	
+	
+	public Usuario(String username, String password, String token) {
+		this.username = username;
+		this.password = password;
+		this.token = token;
+	}
+
+
+
+
+
 	public String getUsername() {
 		return username;
 	}

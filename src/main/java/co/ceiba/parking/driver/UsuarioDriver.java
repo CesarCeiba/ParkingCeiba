@@ -44,21 +44,22 @@ public class UsuarioDriver implements IUsuario {
 		}
 		
 		//if (u.getPassword().equals(password)){
-			Cryptografy c = new Cryptografy();
-			String token = new String();
-			token = c.Encriptar(username);
+			String token = "";
+			try {
+				token = Cryptografy.Encriptar(username);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			u.setToken(token);
 			repositorio.save(u);
 			return token;
 		//}
-		
-		//return "404";
+
 	}
 	
 	
 	@Override
 	public boolean logout() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

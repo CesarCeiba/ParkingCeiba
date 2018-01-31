@@ -2,14 +2,17 @@ package co.ceiba.parking.parquedero;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.ceiba.parking.driver.CarroDriver;
 import co.ceiba.parking.driver.MotoDriver;
@@ -21,20 +24,36 @@ import co.ceiba.parking.logica.RegistroVehiculo;
 import co.ceiba.parking.logica.Vehiculo;
 import co.ceiba.parking.repository.CarroJpaRepository;
 import co.ceiba.parking.repository.MotoJpaRepository;
+import co.ceiba.parking.repository.VehiculoJpaRepository;
 import co.ceiba.parking.testdatabuilder.CarroTestDataBuilder;
 import co.ceiba.parking.testdatabuilder.MotoTestDataBuilder;
 import co.ceiba.parking.testdatabuilder.ParqueaderoTestDataBuilder;
 
+@SpringBootTest
+@Transactional
+@RunWith(SpringRunner.class)
 public class RegistroVehiculoTest {
 	
 	@InjectMocks
 	@Autowired
-	CarroDriver cd = new CarroDriver();
-	MotoDriver md = new MotoDriver();
+	CarroDriver cd;
+	
+	@InjectMocks
+	@Autowired
+	MotoDriver md;
+	
+	@InjectMocks
+	@Autowired
+	RegistroVehiculoDriver vd; 
 	
 	@Mock	
 	private CarroJpaRepository repositorioCarro;
+	
+	@Mock
 	private MotoJpaRepository repositorioMoto;
+	
+	@Mock
+	private VehiculoJpaRepository vehiculoJpaRepository;
 
 	
 	Calendar cal;
@@ -42,7 +61,6 @@ public class RegistroVehiculoTest {
 	private Date fechaFinalCarro;
 	private Date fechaInicialMoto;
 	private Date fechaFinalMoto;
-	private Date fechaIngresoVehiculoPlacaIniciaA;
 	
 	
 	CarroTestDataBuilder ctb = new CarroTestDataBuilder();
@@ -65,9 +83,7 @@ public class RegistroVehiculoTest {
 		cal.set(2018, 0, 29, 17, 00, 00);//2018-01-31 07:00:00
 		fechaFinalMoto = cal.getTime();
 		
-		cal.set(2018, 0, 28);
-		fechaIngresoVehiculoPlacaIniciaA = cal.getTime();
-		
+		cal.set(2018, 0, 28);		
 	}
 	
 	
@@ -77,6 +93,8 @@ public class RegistroVehiculoTest {
 		Carro c = ctb.withHoraIngreso(fechaInicialCarro)
 				     .withHoraSalida(fechaFinalCarro)
 				     .build();
+		
+		//repositorioCarro.
 		
 		//Act		
 		double total = registro.totalParqueo(c);
@@ -97,28 +115,14 @@ public class RegistroVehiculoTest {
 		//Assert
 		Assert.assertEquals(6000, total, 0);
 	}
-	
-	
-	@Test
-	public void IngresoPlacaIniciaPorLetraALosDomingosYLunesTest() {
-		//Arrange		
-		Carro c = ctb.withPlaca("ABC123")
-					 .withHoraIngreso(fechaIngresoVehiculoPlacaIniciaA)
-				     .build();		
-		//Act
-		boolean insertado = c.esPlacaValida();
-		//Assert
-		Assert.assertFalse(insertado);
-	}
+
 	
 	
 	@Test
 	public void ParqueaderoNoDisponibleParaCarros(){
 		//Arrange
 		parqueadero = parqueaderoTestDataBuilder.build();		
-		repositorioCarro = Mockito.mock(CarroJpaRepository.class);
 		Mockito.when(repositorioCarro.totalParqueados()).thenReturn(parqueadero.getCapacidadCarros());
-		cd.setRepositorio(repositorioCarro);
 		
 		//Act
 		boolean esperado = cd.totalParqueados() == 20 ? false : true;
@@ -131,9 +135,7 @@ public class RegistroVehiculoTest {
 	public void ParqueaderoNoDisponibleParaMotos(){
 		//Arrange
 		parqueadero = parqueaderoTestDataBuilder.build();
-		repositorioMoto = Mockito.mock(MotoJpaRepository.class);
 		Mockito.when(repositorioMoto.totalParqueados()).thenReturn(parqueadero.getCapacidadMotos());
-		md.setRepositorio(repositorioMoto);
 		
 		//Act
 		boolean esperado = md.totalParqueados() == 10 ? false : true;
@@ -145,16 +147,14 @@ public class RegistroVehiculoTest {
 	@Test
 	public void VehiculoEnParqueadero(){
 		//Arrange
-		Vehiculo v = ctb.withPlaca("").build();
-		RegistroVehiculoDriver vd;// 
-		vd = Mockito.mock(RegistroVehiculoDriver.class);
-		Mockito.when(vd.vehiculoEnParqueadero(Mockito.anyString())).thenReturn(1);
+		Vehiculo v = ctb.withPlaca("XYZ987").build();		
+		Mockito.when(vehiculoJpaRepository.vehiculoParqueado(Mockito.anyString())).thenReturn(1);
 		
 		//Act
-		boolean esperado = v.vehiculoEnParqueadero(Optional.of(vd));
+		int esperado = vd.vehiculoEnParqueadero(v.getPlaca()); //v.vehiculoEnParqueadero(Optional.of(vd));
 								
 		//Assert
-		Assert.assertTrue(esperado);
+		Assert.assertEquals(1, esperado);
 	}
 	
 }

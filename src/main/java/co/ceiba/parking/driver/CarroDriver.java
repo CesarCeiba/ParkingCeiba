@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.ceiba.parking.exception.ParqueaderoException;
 import co.ceiba.parking.logica.Carro;
 import co.ceiba.parking.repository.CarroJpaRepository;
 
@@ -46,11 +47,11 @@ public class CarroDriver {
 	
 	
 	@PutMapping("/regcarro/update/{placa}")
-	public Carro update (@PathVariable String placa, @RequestBody Carro c){
+	public void update (@PathVariable String placa, @RequestBody Carro c) throws ParqueaderoException{
 		
 		Carro car = repositorio.findOne(placa);
 		if (car == null){
-			return null;
+			throw new ParqueaderoException("Existen datos inconsistentes en el registro a modificar");
 		}
 		
 		car.setPlaca(c.getPlaca());
@@ -59,19 +60,21 @@ public class CarroDriver {
 		car.setHoraSalida(c.getHoraSalida());
 		repositorio.save(car);
 		
-		return car;
+
 	}
 	
 	@PostMapping("/regcarro/insert")
-	public boolean save(@Valid @RequestBody Carro c){
+	public void save(@Valid @RequestBody Carro c) throws ParqueaderoException {
 		
 		if (!c.esPlacaValida()){
-			return false;
+			throw new ParqueaderoException("La placa ingresada no es valida");
 		}
 		
-		Carro r = repositorio.save(c);
+		if (this.totalParqueados() == 20){
+			throw new ParqueaderoException("No hay espacio disponible para el Carro");
+		}
 		
-		return r == null ? false : true;
+		repositorio.save(c);
 	}
 	
 	@GetMapping("/regcarro/parqueados")

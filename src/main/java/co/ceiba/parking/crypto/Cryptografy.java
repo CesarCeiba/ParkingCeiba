@@ -1,9 +1,7 @@
 package co.ceiba.parking.crypto;
 
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -12,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 public class Cryptografy {
-	public static String Encriptar(String texto) {
+	public static String Encriptar(String texto) throws Exception {
 		
         String secretKey = "CeibaParking";
         String base64EncryptedString = "";
@@ -33,7 +31,7 @@ public class Cryptografy {
             base64EncryptedString = new String(base64Bytes);
  
         } catch (Exception ex) {
-        	
+        	throw new Exception("Ha ocurrido al encriptar la clave: "+ex.getMessage());        	
         }
         return base64EncryptedString;
 	}
@@ -58,6 +56,7 @@ public class Cryptografy {
             base64EncryptedString = new String(plainText, "UTF-8");
  
         } catch (Exception ex) {
+        	throw new Exception("Ha ocurrido al encriptar la clave: "+ex.getMessage());
         }
         return base64EncryptedString;
     }
