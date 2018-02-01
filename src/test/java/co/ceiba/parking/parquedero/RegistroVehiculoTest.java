@@ -86,37 +86,40 @@ public class RegistroVehiculoTest {
 		cal.set(2018, 0, 28);		
 	}
 	
+
 	
 	@Test
 	public void CalcularTotalParqueoCarroTest() {
 		//Arrange			
 		Carro c = ctb.withHoraIngreso(fechaInicialCarro)
-				     .withHoraSalida(fechaFinalCarro)
-				     .build();
+				    .withHoraSalida(fechaFinalCarro)
+				    .withPlaca("UAM484")
+				    .build();
 		
-		//repositorioCarro.
-		
+		Mockito.when(repositorioCarro.exists("UAM484")).thenReturn(true);
+		Mockito.when(repositorioCarro.findOne("UAM484")).thenReturn(c);
 		//Act		
-		double total = registro.totalParqueo(c);
+		double total = vd.calcularTotalTarifa(c.getPlaca());
 		//Assert
 		Assert.assertEquals(19000, total, 0);
 	}
 	
-	
+
 	@Test
 	public void CalcularTotalParqueoMotoTest() {
 		//Arrange			
 		Moto m = mtb.withHoraIngreso(fechaInicialMoto)
 				    .withHoraSalida(fechaFinalMoto)
+				    .withPlaca("UAM484")
 				    .build();
-				
+		
+		Mockito.when(repositorioCarro.exists("UAM484")).thenReturn(false);
+		Mockito.when(repositorioMoto.findOne("UAM484")).thenReturn(m);
 		//Act		
-		double total = registro.totalParqueo(m);
+		double total = vd.calcularTotalTarifa(m.getPlaca());
 		//Assert
 		Assert.assertEquals(6000, total, 0);
 	}
-
-	
 	
 	@Test
 	public void ParqueaderoNoDisponibleParaCarros(){

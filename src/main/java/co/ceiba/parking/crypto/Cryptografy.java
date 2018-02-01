@@ -2,7 +2,6 @@ package co.ceiba.parking.crypto;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,7 +11,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import co.ceiba.parking.exception.ParqueaderoException;
 
 public class Cryptografy {
-		
 	private static String codificacion = "utf-8";
 	private static String algoritmoCodificacion = "MD5";
 	private static String estandarEncriptado = "DESede";

@@ -1,11 +1,10 @@
 package co.ceiba.parking.parquedero;
 
-import static org.junit.Assert.fail;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import co.ceiba.parking.driver.UsuarioDriver;
 import co.ceiba.parking.exception.ParqueaderoException;
-import co.ceiba.parking.logica.Carro;
 import co.ceiba.parking.logica.Usuario;
 import co.ceiba.parking.repository.UsuarioJpaRepository;
 import co.ceiba.parking.testdatabuilder.UsuarioTestDataBuilder;
@@ -35,6 +32,9 @@ public class UsuarioTest {
 	
 	@Mock
 	UsuarioJpaRepository usuarioJpaRepository;
+	
+//	@Mock
+//	Calendar cal;
 	
 	UsuarioTestDataBuilder utdb = new UsuarioTestDataBuilder();
 	
@@ -83,7 +83,7 @@ public class UsuarioTest {
 		Mockito.when(usuarioJpaRepository.findOne(Mockito.anyString())).thenReturn(u);
 		//Act
 		try {
-			tokenEsperado = ud.login(u.getUsername(), u.getPassword());
+			tokenEsperado = ud.login(u);
 		} catch (ParqueaderoException e) {
 			throw new ParqueaderoException("Error en el Test -> 'LoginExitoso'");
 		}
@@ -99,18 +99,57 @@ public class UsuarioTest {
 		String tokenEsperado = "";
 		Usuario u = utdb
 					.withUsername("cesar.velasquez")
-					.withPassword("123")
+					.withPassword("1234")
 					.build();
-		Mockito.when(usuarioJpaRepository.findOne(Mockito.anyString())).thenReturn(u);
+		Usuario u_retornado = utdb
+				.withUsername("cesar.velasquez")
+				.withPassword("123")
+				.build();
+		Mockito.when(usuarioJpaRepository.findOne(Mockito.anyString())).thenReturn(u_retornado);
 		//Act
 		try {
-			tokenEsperado = ud.login(u.getUsername(), "1234");
+			tokenEsperado = ud.login(u);
+			System.out.println("Test: "+tokenEsperado);
 		} catch (ParqueaderoException e) {
 			throw new ParqueaderoException("Error en el Test -> 'LoginFallido'");
 		}
 		
 		//Assert
-		Assert.assertEquals(tokenEsperado, "");
+		Assert.assertTrue(tokenEsperado.isEmpty());
+	}
+	
+	
+	@Test
+	public void validacionTokenExitosaDentroDelTiempoLimite() throws ParqueaderoException, ParseException{
+		//Arrange
+		String tokenEsperado = "";
+		Calendar cal = Calendar.getInstance();
+		cal.set(2018, 0, 31, 07, 04, 59);
+
+		
+		//Act
+		tokenEsperado = ud.validarToken("qfnZKrgU21azN7Z8e3Kft3UzH/X2rgbhYB+9kdP8hoOEnd9R4KC8oImZNLVkqgS4", cal);
+
+
+		//Assert
+		Assert.assertTrue(!tokenEsperado.isEmpty());
+	}
+	
+	
+	@Test
+	public void validacionTokenExitosaTiempoAgotado() throws ParqueaderoException, ParseException{
+		//Arrange
+		String tokenEsperado = "";
+		Calendar cal = Calendar.getInstance();
+		cal.set(2018, 0, 31, 07, 05, 59);
+		
+		
+		//Act
+		tokenEsperado = ud.validarToken("qfnZKrgU21azN7Z8e3Kft3UzH/X2rgbhYB+9kdP8hoOEnd9R4KC8oImZNLVkqgS4", cal);
+		
+		
+		//Assert
+		Assert.assertTrue(tokenEsperado.isEmpty());
 	}
 	
 }

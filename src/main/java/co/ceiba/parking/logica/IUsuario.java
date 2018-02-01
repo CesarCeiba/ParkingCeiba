@@ -4,7 +4,7 @@ import co.ceiba.parking.exception.ParqueaderoException;
 
 public interface IUsuario {
 	
-	public String login(String username, String password) throws ParqueaderoException;
+	public String login(Usuario user) throws ParqueaderoException;
 	
 	
 	public boolean logout();
